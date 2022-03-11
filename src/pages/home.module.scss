@@ -1,0 +1,130 @@
+.homeContainer {
+  max-width: 1240px;
+  margin   : 0 auto;
+
+  padding   : 2rem;
+  min-height: calc(100vh - 15rem);
+
+  display       : flex;
+  flex-direction: column;
+
+  .searchContainer {
+    display    : flex;
+    align-items: center;
+    gap        : 1rem;
+
+    .inputSearch {
+      padding      : 1rem 2rem;
+      border-radius: 0.8rem;
+      border       : 0.1rem solid var(--gray-300);
+      width        : 100%;
+
+      height: 5rem;
+    }
+  }
+
+  .cardsContainer {
+    display              : grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    list-style           : none;
+
+    gap: 2rem;
+
+    position: relative;
+
+    li {
+      position: relative;
+    }
+
+    .starCard {
+      position: absolute;
+      right   : 1.5rem;
+      top     : 1.5rem;
+
+      font-size: 3rem;
+      color    : rgba(204, 204, 204, 0.6);
+
+      z-index   : 900;
+      cursor    : pointer;
+      transition: all 0.3s;
+
+      &:hover {
+        color: var(--yellow-900);
+      }
+    }
+
+    .sectionHeroes {
+      button {
+        display: block;
+      }
+    }
+    
+    @media (max-width: 560px) {
+      .homeContainer {
+        .searchContainer {
+          display: block;
+    
+          button {
+            width : 100%;
+            margin: 1rem 0;
+          }
+        }
+      }
+    
+      .sectionHeroes {
+        button {
+          width: 100%;
+        }
+      }
+    }
+
+
+    .cardContent {
+      border: 0.1rem solid var(--gray-100);
+      height: 400px;
+
+      border-radius: 0.5rem;
+      overflow     : hidden;
+      position     : relative;
+      cursor       : pointer;
+
+      transition: all 1s;
+
+      .backdrop {
+        background-repeat: none;
+        background-size  : cover;
+
+        background-position: center;
+        position           : absolute;
+        top                : 0;
+        left               : 0;
+        right              : 0;
+        bottom             : 0;
+        z-index            : -1;
+
+        filter: grayscale(75%);
+      }
+
+      &:hover {
+        box-shadow: 0 0 2rem var(--shadow);
+
+        .backdrop {
+          filter: grayscale(0);
+        }
+      }
+
+      .titleCard {
+        background-color: var(--blue-900);
+        position        : absolute;
+        bottom          : 0;
+        padding         : 2rem 1.5rem;
+
+        width: 100%;
+
+        font-size: 1.8rem;
+        color    : var(--white-100)
+      }
+    }
+  }
+
+}
