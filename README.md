@@ -2,9 +2,9 @@
 
 <br>
 
-![alt logo da Marvel](path/to/file)
+![alt logo da Marvel](https://github.com/DarcioCarvalho/React_Marvel_Challenge/raw/master/Marvel_Logo.png)
 
-### Uma aplicação que Lista Personagens da MARVEL e foi criada do zero com as seguintes tecnologias:</h3>
+### Uma aplicação que Lista Personagens da MARVEL e foi criada com as seguintes tecnologias:</h3>
 
   <ul>:arrow_right: Desenvolvida com Framework React Next.js</ul>
   <ul>:arrow_right: Dados consumidos através da API do servidor da MARVEL (https://developer.marvel.com/docs)</ul>
