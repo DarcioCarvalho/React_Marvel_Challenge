@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { Button } from '../components/Button';
@@ -8,47 +9,35 @@ import { useHeroes } from '../hooks/useHeroes';
 import { FaStar } from 'react-icons/fa'
 
 import styles from './home.module.scss';
-import { useState } from 'react';
-
-interface Hero {
-  id: number,
-  name: string,
-  thumbnail: {
-    path: string,
-    extension: string
-  },
-  favorite?: boolean
-}
-
 
 export default function Home() {
 
   const { handleMoreHeroes, heroes, handleSearchHeroes, handleFavoriteHero } = useHeroes();
   const [valueSearch, setValueSearch] = useState('');
 
-
-  console.log('Index.tsx >> Heroes:  ', heroes);
-
-
   return (
     <>
-      <Header />
       <Head>
-        <title>Marvel Challenge | Magalu</title>
+        <title>Marvel Challenge | DNC Soluções em Software</title>
       </Head>
+
+      <Header />
+
       <main className={styles.homeContainer}>
 
-        <Search
-          placeholder={'Procure por Avangers, Spider-man, Balder ...'}
-          name={'searchHero'}
-          onBlur={(e) => setValueSearch(e.target.value)}
-        />
-        <Button
-          titleButton={'Pesquisar'}
-          colorTitle={'#FFFFFF'}
-          bgColor={'#700611'}
-          onClick={() => handleSearchHeroes(valueSearch)}
-        />
+        <section className={styles.searchContainer}>
+          <Search
+            placeholder={'Procure por Avangers, Spider-man, Balder ...'}
+            name={'searchHero'}
+            onBlur={(e) => setValueSearch(e.target.value)}
+          />
+          <Button
+            titleButton={'Pesquisar'}
+            colorTitle={'--white-100'}
+            bgColor={'--red-900'}
+            onClick={() => handleSearchHeroes(valueSearch)}
+          />
+        </section>
 
         <section id='sectionHeroes' className={styles.sectionHeroes}>
           {heroes.length ? (
@@ -77,14 +66,14 @@ export default function Home() {
 
             </ul>
           ) : (
+            valueSearch !== '' &&
             <h3>Nenhuma informação foi encontrada para a busca realizada</h3>
           )}
 
           <Button
             titleButton={'Buscar mais heróis'}
-            colorTitle={'#FFFFFF'}
-            bgColor={'#700611'}
-
+            colorTitle={'--white-100'}
+            bgColor={'--red-900'}
             onClick={handleMoreHeroes}
           />
 

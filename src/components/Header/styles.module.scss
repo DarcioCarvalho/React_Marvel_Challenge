@@ -12,4 +12,42 @@
     display        : flex;
     justify-content: center;
   }
+ 
+}
+
+.counterContainer {
+  width: 125rem;
+  display: flex;
+  position: relative;
+  top: -3rem;
+  left: 12rem;
+  color: var(--gray-100);
+  
+  span {
+    margin-left: 0.75rem;
+  }
+
+  .characterContainer {
+    width: 7rem;
+  }
+
+  .counterFavorite {
+    color: var(--yellow-900);
+  }
+
+  .buttonFavorite {
+    width: 20rem;
+    position: absolute;
+    left: 100rem;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 1.88rem;
+    font-weight: 600;
+
+    transition: filter 0.2s;
+    &:hover{
+      filter: brightness(0.8);
+    }
+  }
 }

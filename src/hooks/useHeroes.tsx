@@ -1,5 +1,3 @@
-import { count } from "console";
-import { type } from "os";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
 import api from "../services/api";
 
@@ -26,7 +24,8 @@ interface HeroesContextData {
   heroes: Hero[],
   handleMoreHeroes: () => void,
   handleSearchHeroes: (valueSearch: string) => void,
-  handleFavoriteHero: (hero: Hero) => void
+  handleFavoriteHero: (hero: Hero) => void,
+  favoritesList: (activatedFavorite: boolean) => void
 }
 
 
@@ -51,7 +50,6 @@ export function HeroesProvider({ children }: HeroesProviderProps): JSX.Element {
       }
 
       return
-      //return JSON.parse(storageHeroes);
     }
 
     api.get('/characters')
@@ -60,11 +58,9 @@ export function HeroesProvider({ children }: HeroesProviderProps): JSX.Element {
 
         setHeroes(resultHeroes);
         updateLocalStorage(resultHeroes);
-        //localStorage.setItem('@HeroesMarvel', JSON.stringify(resultHeroes));
 
         setAmountCharacters(resultHeroes.length);
         updateLocalStorageAmount(resultHeroes.length);
-        //localStorage.setItem('@HeroesMarvel:amountCharacters', JSON.stringify(resultHeroes.length));
 
       })
       .catch(err => console.log(err.message));
@@ -72,7 +68,7 @@ export function HeroesProvider({ children }: HeroesProviderProps): JSX.Element {
 
   const handleMoreHeroes = useCallback(async () => {
     try {
-      const offset = amountCharacters;  //heroes.length;
+      const offset = amountCharacters
 
       const response = await api.get('/characters', {
         params: {
@@ -82,8 +78,6 @@ export function HeroesProvider({ children }: HeroesProviderProps): JSX.Element {
 
       const resultHeroes = response.data.data.results;
 
-      /* const storageHeroes = localStorage.getItem('@HeroesMarvel');
-      const localHeroes: Heroes[] = JSON.parse(storageHeroes); */
       const localHeroes = getLocalStorage();
 
       const newHeroes = (localHeroes.length > amountCharacters) ?
@@ -92,10 +86,10 @@ export function HeroesProvider({ children }: HeroesProviderProps): JSX.Element {
 
       setHeroes(newHeroes);
       updateLocalStorage(newHeroes);
-      //localStorage.setItem('@HeroesMarvel', JSON.stringify(newHeroes));
+
       setAmountCharacters(amountCharacters + 20);
       updateLocalStorageAmount(amountCharacters + 20);
-      //localStorage.setItem('@HeroesMarvel:amountCharacters', JSON.stringify(amountCharacters + 20));
+
     } catch (error) {
       console.log(`error: ${error.message}`);
     }
@@ -103,7 +97,7 @@ export function HeroesProvider({ children }: HeroesProviderProps): JSX.Element {
 
   const handleSearchHeroes = async (valueSearch: string) => {
     try {
-      const nameStartsWith = valueSearch;
+      const nameStartsWith = valueSearch
       if (nameStartsWith) {
 
         const response = await api.get('/characters', {
@@ -118,19 +112,22 @@ export function HeroesProvider({ children }: HeroesProviderProps): JSX.Element {
         setHeroes(resultHeroes);
 
 
-        /* const storageHeroes = localStorage.getItem('@HeroesMarvel');
-        const localHeroes = JSON.parse(storageHeroes); */
         const localHeroes = getLocalStorage();
 
-        const newHeroes = [...localHeroes, ...resultHeroes];
+        const newHeroesLocal = [...localHeroes, ...resultHeroes];
 
-        newHeroes.reduce((unique, item) => {
-          return unique.includes(item) ? unique : [...unique, item]
+        const newHeroes = newHeroesLocal.reduce((acc, current) => {
+          if (
+            !acc.some((item: Hero) => item.id === current.id)
+          ) {
+            acc.push(current)
+          }
+          return acc
         }, []);
 
-        newHeroes.sort((a, b) => a.name < b.name ? -1 : 1);
-        updateLocalStorage(newHeroes);
-        //localStorage.setItem('@HeroesMarvel', JSON.stringify(newHeroes));
+
+        const sortedHeroes = newHeroes.sort((a: Hero, b: Hero) => a.name < b.name ? -1 : 1);
+        updateLocalStorage(sortedHeroes);
 
       }
     } catch (error) {
@@ -140,7 +137,6 @@ export function HeroesProvider({ children }: HeroesProviderProps): JSX.Element {
 
   const handleFavoriteHero = useCallback(async (hero: Hero) => {
     try {
-      console.log('cai aqui dentro do favorite - Hero.id');
 
       const heroesUpdate = heroes.map(heroUpdate =>
         heroUpdate.id === hero.id ? {
@@ -151,8 +147,6 @@ export function HeroesProvider({ children }: HeroesProviderProps): JSX.Element {
 
       setHeroes(heroesUpdate);
 
-      /* const storageHeroes = localStorage.getItem('@HeroesMarvel');
-      const localHeroes = JSON.parse(storageHeroes); */
       const localHeroes = getLocalStorage();
 
       if (heroesUpdate.length === localHeroes.length) {
@@ -174,6 +168,16 @@ export function HeroesProvider({ children }: HeroesProviderProps): JSX.Element {
     }
   }, [heroes]);
 
+  const favoritesList = useCallback(async (activatedFavorite: boolean) => {
+
+    const localHeroes = getLocalStorage()
+
+    const favoritesHeroes = activatedFavorite ? localHeroes : localHeroes.filter(hero => hero.favorite)
+
+    setHeroes(favoritesHeroes)
+
+  }, [heroes]);
+
   function getLocalStorage(): Hero[] {
     const storageHeroes = localStorage.getItem('@HeroesMarvel');
     return JSON.parse(storageHeroes);
@@ -189,7 +193,7 @@ export function HeroesProvider({ children }: HeroesProviderProps): JSX.Element {
 
 
   return (<HeroesContext.Provider
-    value={{ heroes, handleMoreHeroes, handleSearchHeroes, handleFavoriteHero }}
+    value={{ heroes, handleMoreHeroes, handleSearchHeroes, handleFavoriteHero, favoritesList }}
   >
     {children}
   </HeroesContext.Provider>);

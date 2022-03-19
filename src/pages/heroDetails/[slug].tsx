@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
+import { Header } from "../../components/Header";
 import api from "../../services/api";
 import styles from './styles.module.scss';
 
@@ -53,14 +54,16 @@ interface HeroDetailsProps {
 
 export default function HeroDetails({ dataResult }: HeroDetailsProps) {
 
-  const dataHero = dataResult[0];
-  const sections = ['comics', 'events', 'series', 'stories'];
+  const dataHero = dataResult[0]
 
   return (
     <>
       <Head>
-        <title>{dataHero.name}</title>
+        <title>Marvel Challenge | DNC Soluções em Software - {dataHero.name}</title>
       </Head>
+
+      <Header />
+
       <main className={styles.heroContainer}>
         <div className={styles.heroContent}>
           <section className={styles.heroDisplay}
@@ -131,11 +134,12 @@ export default function HeroDetails({ dataResult }: HeroDetailsProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
+
   const { data } = await api.get('/characters');
 
   const heroes = data.data.results;
 
-  const paths = heroes.map(hero => {
+  const paths = heroes.map((hero: HeroData) => {
     return {
       params: {
         slug: `${hero.id}`
@@ -150,14 +154,17 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
+
   const { slug } = context.params;
+
   const { data } = await api.get(`/characters/${slug}`);
+
   const dataResult = data.data.results;
 
   return {
     props: {
       dataResult
     },
-    revalidate: 60 * 60 * 24 // seconds * minutes * hours (update every 24 hours)
+    revalidate: 60 * 60 * 24 // 24 hours
   };
 };
