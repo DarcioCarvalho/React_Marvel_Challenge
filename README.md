@@ -12,11 +12,11 @@
 
 ### Funcionalidades:</h3>
 
-  <ul>:arrow_right: Lista de Personagens do servidor da MARVEL com paginação através do botão "Carrega mais heróis" (Carrega 20 Personagens por vez)</ul>
-  <ul>:arrow_right: Armazena no Navegador os Personagens carregados </ul>
-  <ul>:arrow_right: Acesso das informações do Personagem escolhido </ul>
-  <ul>:arrow_right: Usuário pode definir seus Personagens favoritos clicando na estrela do card</ul>
-  <ul>:arrow_right: Lista os Personagens favoritos </ul>
+  <ul>:arrow_right: Lista de Heróis do servidor da MARVEL com paginação através do botão "Carrega mais heróis" (Carrega 20 Heróis por vez)</ul>
+  <ul>:arrow_right: Armazena no Navegador os Heróis carregados </ul>
+  <ul>:arrow_right: Acesso as informações do Herói escolhido </ul>
+  <ul>:arrow_right: Usuário pode definir seus Heróis favoritos clicando na estrela do card</ul>
+  <ul>:arrow_right: Lista os Heróis favoritos </ul>
 <br>
 
 
